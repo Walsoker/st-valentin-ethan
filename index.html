@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ma Valentine 💖</title>
+  <style>
+    /* Styles identiques à ton code (garde les mêmes) */
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('img/background-baby.jpeg');
+      background-size: contain;
+      background-position: center;
+      background-attachment: fixed;
+      /* effet parallaxe doux */
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .center {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .type {
+      max-width: 900px;
+      font-size: 26px;
+      line-height: 1.6;
+      min-height: 200px;
+      white-space: pre-line;
+    }
+
+    button {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      background: #ff2f92;
+      color: white;
+      margin-top: 20px;
+      transition: 0.4s;
+    }
+
+    #no {
+      background: #333;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .cards {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .card {
+      width: 260px;
+      height: 360px;
+      perspective: 1000px;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      transition: 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    .card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 0, 150, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .card-back {
+      background: linear-gradient(45deg, #ff2f92, #6a00ff);
+      font-size: 32px;
+    }
+
+    .card-front {
+      background: #111;
+      transform: rotateY(180deg);
+    }
+
+    .card-front img {
+      width: 120px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+
+    .gallery {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .gallery img {
+      width: 200px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid #ff2f92;
+    }
+
+    .back-btn {
+      background: #6a00ff;
+      margin-top: 20px;
+    }
+
+    .details-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <audio id="music" src="audio.mp3" loop></audio>
+
+  <!-- 1 – Surprise -->
+  <div id="s1" class="center">
+    <div id="t1" class="type"></div>
+    <button onclick="start()">Commencer</button>
+  </div>
+
+  <!-- 2 – Déclaration -->
+  <div id="s2" class="center hidden">
+    <div id="t2" class="type"></div>
+    <button onclick="goQuestion()">Continuer</button>
+  </div>
+
+  <!-- 3 – Question Valentine -->
+  <div id="s3" class="center hidden">
+    <div id="t3" class="type"></div>
+    <div style="display:flex; gap:20px">
+      <button id="yes">OUI 💖</button>
+      <button id="no">NON</button>
+    </div>
+  </div>
+
+  <!-- 4 – Cartes restaurants -->
+  <div id="s4" class="center hidden">
+    <h2>Choisis notre restaurant de Saint‑Valentin 💕</h2>
+    <div class="cards">
+
+      <!-- Villa Lana -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-face card-back">?</div>
+          <div class="card-face card-front">
+            <img src="img/villa_logo.png" alt="Villa Lana">
+            <h3>Villa Lana</h3>
+            <p>Riviera Golf</p>
+            <button onclick="showResto('villa')">Voir le resto</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BNB -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-face card-back">?</div>
+          <div class="card-face card-front">
+            <img src="img/bnb_logo.jpeg" alt="BNB">
+            <h3>BNB</h3>
+            <p>8ième Tranche</p>
+            <button onclick="showResto('bnb')">Voir le resto</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Texas Grillz -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-face card-back">?</div>
+          <div class="card-face card-front">
+            <img src="img/logo_texas_frills.jpeg" alt="texas grills">
+            <h3>Texas Grillz</h3>
+            <p>Cocody, Yopougon, Deux Plateaux</p>
+            <button onclick="showResto('texas')">Voir le resto</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 5 – Détail restaurant (fiche) -->
+  <div id="s5" class="center hidden">
+    <img id="restoLogo" src="" style="width:150px; margin-bottom:10px; border-radius:10px;">
+    <h2 id="restoName"></h2>
+    <p id="restoAddr"></p>
+    <div class="details-buttons">
+      <button onclick="showLieu()">📍 Voir le lieu</button>
+      <button onclick="showPlats()">🍽️ Voir les plats</button>
+      <button onclick="chooseResto()">❤️ Choisir ce restaurant</button>
+    </div>
+    <button class="back-btn" onclick="backToCards()">⬅ Retour aux restaurants</button>
+  </div>
+
+  <!-- 6 – Lieu (photos) -->
+  <div id="s6" class="center hidden">
+    <h2>Le lieu – <span id="lieuName"></span></h2>
+    <div class="gallery" id="lieuGallery"></div>
+    <button class="back-btn" onclick="backToDetail()">⬅ Retour à la fiche</button>
+  </div>
+
+  <!-- 7 – Plats (photos) -->
+  <div id="s7" class="center hidden">
+    <h2>Les plats – <span id="platsName"></span></h2>
+    <div class="gallery" id="platsGallery"></div>
+    <button class="back-btn" onclick="backToDetail()">⬅ Retour à la fiche</button>
+  </div>
+
+  <!-- 8 – Final (choix confirmé) -->
+  <div id="s8" class="center hidden">
+    <h1>Parfait 😌❤️</h1>
+    <p id="finalText"></p>
+    <p>Le message a été envoyé à Othniel.</p>
+    <button onclick="backToCards()">Changer de restaurant</button>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+
+</html>
